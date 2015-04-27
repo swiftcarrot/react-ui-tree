@@ -1,0 +1,120 @@
+@color-blue: #428bca;
+
+.f-no-select {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.m-tree {
+  position: relative;
+  overflow: hidden;
+  .f-no-select;
+}
+
+.m-draggable {
+  position: absolute;
+  opacity: 0.8;
+  .f-no-select;
+}
+
+.m-layout {
+  height: 100%;
+}
+
+.m-root {
+  width: 100%;
+
+  & > .m-node > .inner {
+    .move, .remove {
+      display: none;
+    }
+  }
+}
+
+.m-node {
+  &.active {
+    & > .inner {
+      background-color: @color-blue;
+      color: #fff;
+
+      .fa {
+        color: #fff;
+      }
+    }
+  }
+
+  &.placeholder > * {
+    visibility: hidden;
+  }
+
+  &.placeholder {
+    border: 1px dashed @color-blue;
+  }
+
+  &.append {
+
+  }
+
+  &.before {
+    border-top: 1px solid red;
+  }
+
+  &.after {
+    border-bottom: 1px solid red;
+  }
+
+  .inner {
+    position: relative;
+    padding: 8px 12px;
+    background-color: #f4f6f7;
+    color: #438eb9;
+    font-size: 14px;
+    border-bottom: 1px solid #dce2e8;
+    border-left: 2px solid #f4f6f7;
+    cursor: pointer;
+
+    &.active {
+      background-color: @color-blue;
+    }
+
+    .name {
+      margin: 0 4px;
+    }
+
+    .action {
+      float: right;
+
+      .fa {
+        margin: 0 4px;
+
+        &:hover {
+          background-color: @color-blue;
+          color: #fff;
+        }
+      }
+    }
+
+    .fa {
+      color: #438eb9;
+    }
+
+    .collapse {
+      cursor: pointer;
+    }
+
+    .add {
+      cursor: pointer;
+    }
+
+    .remove {
+      cursor: pointer;
+    }
+
+    .move {
+      cursor: move;
+    }
+  }
+}

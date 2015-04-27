@@ -15,7 +15,7 @@
     "react",
     "react-component"
   ],
-  "author": "wang zuo <wzuoadjusted@gmail.com> (https://twitter.com/wang_zuo)",
+  "author": "Wang Zuo",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pqx/react-ui-tree/issues"
@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@adjusted/tree": "^1.0.0",
-    "classnames": "^1.2.1"
+    "classnames": "^1.2.1",
+    "object-assign": "^2.0.0"
   }
 }
