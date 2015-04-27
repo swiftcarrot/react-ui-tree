@@ -35,6 +35,7 @@
     "webpack": "^1.8.10"
   },
   "dependencies": {
-    "@adjusted/tree": "^1.0.0"
+    "@adjusted/tree": "^1.0.0",
+    "classnames": "^1.2.1"
   }
 }
