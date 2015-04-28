@@ -61,7 +61,7 @@ var App = React.createClass({
   render() {
     return (
       <div className="tree">
-        <Tree tree={this.state.tree} onChange={this._onChange}/>
+        <Tree paddingLeft={20} tree={this.state.tree} onChange={this._onChange}/>
       </div>
     );
   },
