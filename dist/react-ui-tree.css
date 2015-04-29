@@ -59,7 +59,6 @@
   color: #438eb9;
   font-size: 14px;
   border-bottom: 1px solid #dce2e8;
-  border-left: 2px solid #f4f6f7;
   cursor: pointer;
 }
 .m-node .inner.active {

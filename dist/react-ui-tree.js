@@ -8,6 +8,17 @@ var Node = require('./node');
 module.exports = React.createClass({
   displayName: 'UITree',
 
+  propTypes: {
+    tree: React.PropTypes.object,
+    paddingLeft: React.PropTypes.number
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      paddingLeft: 20
+    };
+  },
+
   getInitialState: function getInitialState() {
     var tree = new Tree(this.props.tree);
     tree.updateNodesPosition();
@@ -63,7 +74,9 @@ module.exports = React.createClass({
           'div',
           { className: 'm-root' },
           layout && React.createElement(Node, { node: layout, current: current,
+            paddingLeft: this.props.paddingLeft,
             onDragStart: this.dragStart,
+            onCollapse: this.toggleCollapse,
             dragging: draggingNode && draggingNode.id })
         )
       )
@@ -71,8 +84,6 @@ module.exports = React.createClass({
   },
 
   dragStart: function dragStart(nodeId, dom, e) {
-    console.log('dragStart', nodeId);
-
     var dragging = {
       id: nodeId,
       w: dom.offsetWidth,
@@ -95,9 +106,9 @@ module.exports = React.createClass({
   },
 
   drag: function drag(e) {
-    console.log('dragging');
     var tree = this.state.tree;
     var dragging = this.state.dragging;
+    var paddingLeft = this.props.paddingLeft;
 
     var _startX = this._startX;
     var _startY = this._startY;
@@ -113,8 +124,7 @@ module.exports = React.createClass({
     dragging.x = pos.x;
     dragging.y = pos.y;
 
-    // todo: hardcoded paddingLeft (20)
-    var diffX = dragging.x - 10 - (node.left - 2) * 20;
+    var diffX = dragging.x - paddingLeft / 2 - (node.left - 2) * paddingLeft;
     var diffY = dragging.y - dragging.h / 2 - (node.top - 2) * dragging.h;
 
     if (diffX < 0) {
@@ -122,7 +132,7 @@ module.exports = React.createClass({
       if (!node.next) {
         tree.move2(node.id, node.parentId, 'after');
       }
-    } else if (diffX > 20) {
+    } else if (diffX > paddingLeft) {
       // right
       if (node.prev && !tree.get(node.prev).collapsed) {
         tree.move2(node.id, node.prev, 'append');
@@ -161,8 +171,6 @@ module.exports = React.createClass({
   },
 
   dragEnd: function dragEnd() {
-    console.log('dragEnd');
-
     this.setState({
       dragging: {
         id: null,
@@ -175,5 +183,16 @@ module.exports = React.createClass({
 
     window.removeEventListener('mousemove', this.drag);
     window.removeEventListener('mouseup', this.dragEnd);
+  },
+
+  toggleCollapse: function toggleCollapse(nodeId) {
+    var tree = this.state.tree;
+    var node = tree.get(nodeId);
+    node.collapsed = !node.collapsed;
+    tree.updateNodesPosition();
+
+    this.setState({
+      tree: tree
+    });
   }
 });

@@ -13,7 +13,7 @@ var Node = React.createClass({
     var current = this.props.current;
     var dragging = this.props.dragging;
     var classes = {
-      active: current === node.id,
+      // 'active': current === node.id,
       'm-node': true,
       placeholder: node.id === dragging
     };
@@ -25,12 +25,14 @@ var Node = React.createClass({
     if (node.children) {
       children = node.children.map(function (child) {
         return React.createElement(Node, { node: child, current: current, dragging: dragging,
+          paddingLeft: _this.props.paddingLeft,
+          onCollapse: _this.props.onCollapse,
           onDragStart: _this.props.onDragStart });
       });
     }
 
     if (node.collapsed) childrenStyles.display = 'none';
-    childrenStyles.paddingLeft = 20 + 'px'; // todo: no hardcoded
+    childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
 
     return React.createElement(
       'div',
@@ -66,6 +68,8 @@ var Node = React.createClass({
 
   _onCollapse: function _onCollapse(e) {
     e.stopPropagation();
+    var nodeId = this.props.node.id;
+    if (this.props.onCollapse) this.props.onCollapse(nodeId);
   },
 
   _onMouseDown: function _onMouseDown(e) {
