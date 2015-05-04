@@ -20,29 +20,15 @@ describe('tree', function() {
 
   it('updateNodesPosition()', function() {
     tree.updateNodesPosition();
-    assert.deepEqual(tree.obj, {
-      module: 'root',
-      collapsed: false,
-      top: 1,
-      left: 1,
-      children: [{
-        module: 'a',
-        top: 2,
-        left: 2,
-        collapsed: false,
-        children: [{
-          top: 3,
-          left: 3,
-          module: 'c',
-          collapsed: false
-        }]
-      }, {
-        top: 4,
-        left: 2,
-        module: 'b',
-        collapsed: false
-      }]
-    })
+    var indexes = tree.indexes;
+    assert.strictEqual(tree.getIndex(1).top, 1);
+    assert.strictEqual(tree.getIndex(1).left, 1);
+    assert.strictEqual(tree.getIndex(2).top, 2);
+    assert.strictEqual(tree.getIndex(2).left, 2);
+    assert.strictEqual(tree.getIndex(3).top, 3);
+    assert.strictEqual(tree.getIndex(3).left, 3);
+    assert.strictEqual(tree.getIndex(4).top, 4);
+    assert.strictEqual(tree.getIndex(4).left, 2);
   });
 
   it('move()', function() {
