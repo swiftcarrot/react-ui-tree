@@ -36,6 +36,9 @@ describe('tree', function() {
   });
 
   it('getNodeByTop()', function() {
-    tree.getNodeByTop();
+    assert.deepEqual(tree.getNodeByTop(1).id, 1);
+    assert.deepEqual(tree.getNodeByTop(2).id, 2);
+    assert.deepEqual(tree.getNodeByTop(3).id, 3);
+    assert.deepEqual(tree.getNodeByTop(4).id, 4);
   });
 });
