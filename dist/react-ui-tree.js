@@ -10,7 +10,8 @@ module.exports = React.createClass({
 
   propTypes: {
     tree: React.PropTypes.object,
-    paddingLeft: React.PropTypes.number
+    paddingLeft: React.PropTypes.number,
+    renderNode: React.PropTypes.func
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -21,12 +22,12 @@ module.exports = React.createClass({
 
   getInitialState: function getInitialState() {
     var tree = new Tree(this.props.tree);
+    tree.renderNode = this.props.renderNode;
     tree.updateNodesPosition();
     window.tree = tree;
 
     return {
       tree: tree,
-      currentNodeId: 1,
       dragging: {
         id: null,
         x: null,
@@ -39,7 +40,6 @@ module.exports = React.createClass({
 
   render: function render() {
     var tree = this.state.tree;
-    var current = this.state.currentNodeId;
     var dragging = this.state.dragging;
     var draggingDom = null;
 

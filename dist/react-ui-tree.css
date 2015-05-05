@@ -83,6 +83,12 @@
 .m-node .inner .collapse {
   cursor: pointer;
 }
+.m-node .inner .caret-right:before {
+  content: '\25B8';
+}
+.m-node .inner .caret-down:before {
+  content: '\25BE';
+}
 .m-node .inner .add {
   cursor: pointer;
 }
