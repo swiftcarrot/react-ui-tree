@@ -58,10 +58,15 @@ var App = React.createClass({
     };
   },
 
+  renderNode(node) {
+    return <span className="name">{node.module}</span>;
+  },
+
   render() {
     return (
       <div className="tree">
-        <Tree paddingLeft={20} tree={this.state.tree} onChange={this._onChange}/>
+        <Tree paddingLeft={20} tree={this.state.tree} onChange={this._onChange}
+        renderNode={this.renderNode}/>
       </div>
     );
   },
