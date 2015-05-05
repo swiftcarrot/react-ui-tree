@@ -6,14 +6,17 @@ var proto = Tree.prototype;
 proto.updateNodesPosition = function () {
   var top = 1;
   var left = 1;
-  var root = this.root;
+  var root = this.getIndex(1);
+  var self = this;
 
   root.top = top++;
   root.left = left++;
-  walk(root.children, left, root.collapsed);
+  walk(root.children, root, left, root.collapsed);
 
-  function walk(children, left, collapsed) {
-    children.forEach(function (node) {
+  function walk(children, parent, left, collapsed) {
+    var height = 1;
+    children.forEach(function (id) {
+      var node = self.getIndex(id);
       if (collapsed) {
         node.top = null;
         node.left = null;
@@ -23,24 +26,36 @@ proto.updateNodesPosition = function () {
       }
 
       if (node.children && node.children.length) {
-        walk(node.children, left + 1, collapsed || node.collapsed);
+        height += walk(node.children, node, left + 1, collapsed || node.collapsed);
+      } else {
+        node.height = 1;
+        height += 1;
       }
     });
+
+    if (parent.collapsed) parent.height = 1;else parent.height = height;
+    return parent.height;
   }
 };
 
-proto.move2 = function (fromId, toId, placement) {
-  // console.log("move2", fromId, toId, placement);
-  this.move(fromId, toId, placement);
-  // todo: update can be more efficient
+proto.move = function (fromId, toId, placement) {
+  if (fromId === toId || toId === 1) return;
+
+  var obj = this.remove(fromId);
+  var index = null;
+
+  if (placement === 'before') index = this.insertBefore(obj, toId);else if (placement === 'after') index = this.insertAfter(obj, toId);else if (placement === 'prepend') index = this.prepend(obj, toId);else if (placement === 'append') index = this.append(obj, toId);
+
+  // todo: perf
   this.updateNodesPosition();
+  return index;
 };
 
 proto.getNodeByTop = function (top) {
-  var nodes = this.nodes;
-  for (var id in nodes) {
-    if (nodes.hasOwnProperty(id)) {
-      if (nodes[id].top === top) return nodes[id];
+  var indexes = this.indexes;
+  for (var id in indexes) {
+    if (indexes.hasOwnProperty(id)) {
+      if (indexes[id].top === top) return indexes[id];
     }
   }
 };

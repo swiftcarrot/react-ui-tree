@@ -22,6 +22,7 @@ module.exports = React.createClass({
   getInitialState: function getInitialState() {
     var tree = new Tree(this.props.tree);
     tree.updateNodesPosition();
+    window.tree = tree;
 
     return {
       tree: tree,
@@ -40,26 +41,20 @@ module.exports = React.createClass({
     var tree = this.state.tree;
     var current = this.state.currentNodeId;
     var dragging = this.state.dragging;
-
-    var layout = tree.root;
-    var draggingNode = null;
     var draggingDom = null;
 
     if (dragging.id) {
-      draggingNode = tree.get(dragging.id);
-    }
-
-    if (draggingNode) {
+      var draggingIndex = tree.getIndex(dragging.id);
       var dragging = this.state.dragging;
-      var styles = {
-        top: dragging.y,
-        left: dragging.x,
-        width: dragging.w
-      };
       draggingDom = React.createElement(
         'div',
-        { className: 'm-draggable', style: styles },
-        React.createElement(Node, { node: draggingNode })
+        { className: 'm-draggable', style: {
+            top: dragging.y,
+            left: dragging.x,
+            width: dragging.w
+          } },
+        React.createElement(Node, { tree: tree, index: draggingIndex,
+          paddingLeft: this.props.paddingLeft })
       );
     }
 
@@ -73,19 +68,19 @@ module.exports = React.createClass({
         React.createElement(
           'div',
           { className: 'm-root' },
-          layout && React.createElement(Node, { node: layout, current: current,
+          React.createElement(Node, { tree: tree, index: tree.getIndex(1), key: 1,
             paddingLeft: this.props.paddingLeft,
             onDragStart: this.dragStart,
             onCollapse: this.toggleCollapse,
-            dragging: draggingNode && draggingNode.id })
+            dragging: dragging && dragging.id })
         )
       )
     );
   },
 
-  dragStart: function dragStart(nodeId, dom, e) {
+  dragStart: function dragStart(id, dom, e) {
     var dragging = {
-      id: nodeId,
+      id: id,
       w: dom.offsetWidth,
       h: dom.offsetHeight,
       x: dom.offsetLeft,
@@ -109,6 +104,7 @@ module.exports = React.createClass({
     var tree = this.state.tree;
     var dragging = this.state.dragging;
     var paddingLeft = this.props.paddingLeft;
+    var newIndex = null;
 
     var _startX = this._startX;
     var _startY = this._startY;
@@ -119,49 +115,53 @@ module.exports = React.createClass({
       x: _startX + e.clientX - _offsetX,
       y: _startY + e.clientY - _offsetY
     };
-    var node = tree.get(dragging.id);
-
+    var index = tree.getIndex(dragging.id);
+    var collapsed = index.collapsed;
     dragging.x = pos.x;
     dragging.y = pos.y;
 
-    var diffX = dragging.x - paddingLeft / 2 - (node.left - 2) * paddingLeft;
-    var diffY = dragging.y - dragging.h / 2 - (node.top - 2) * dragging.h;
-
+    var diffX = dragging.x - paddingLeft / 2 - (index.left - 2) * paddingLeft;
+    var diffY = dragging.y - dragging.h / 2 - (index.top - 2) * dragging.h;
     if (diffX < 0) {
       // left
-      if (!node.next) {
-        tree.move2(node.id, node.parentId, 'after');
+      if (!index.next) {
+        newIndex = tree.move(index.id, index.parent, 'after');
       }
     } else if (diffX > paddingLeft) {
       // right
-      if (node.prev && !tree.get(node.prev).collapsed) {
-        tree.move2(node.id, node.prev, 'append');
+      if (index.prev && !tree.getIndex(index.prev).collapsed) {
+        newIndex = tree.move(index.id, index.prev, 'append');
       }
     }
 
     if (diffY < 0) {
       // up
-      var above = tree.getNodeByTop(node.top - 1);
-      tree.move2(node.id, above.id, 'before');
+      var above = tree.getNodeByTop(index.top - 1);
+      newIndex = tree.move(index.id, above.id, 'before');
     } else if (diffY > dragging.h) {
       // down
-      if (node.next) {
-        var below = tree.get(node.next);
-        if (below.children.length && !below.collapsed) {
-          tree.move2(node.id, node.next, 'prepend');
+      if (index.next) {
+        var below = tree.getIndex(index.next);
+        if (below.children && below.children.length && !below.collapsed) {
+          newIndex = tree.move(index.id, index.next, 'prepend');
         } else {
-          tree.move2(node.id, node.next, 'after');
+          newIndex = tree.move(index.id, index.next, 'after');
         }
       } else {
-        var below = tree.getNodeByTop(node.top + 1);
-        if (below && below.parentId !== node.id) {
-          if (below.children.length) {
-            tree.move2(node.id, below.id, 'prepend');
+        var below = tree.getNodeByTop(index.top + index.height);
+        if (below && below.parent !== index.id) {
+          if (below.children && below.children.length) {
+            newIndex = tree.move(index.id, below.id, 'prepend');
           } else {
-            tree.move2(node.id, below.id, 'after');
+            newIndex = tree.move(index.id, below.id, 'after');
           }
         }
       }
+    }
+
+    if (newIndex) {
+      newIndex.collapsed = collapsed;
+      dragging.id = newIndex.id;
     }
 
     this.setState({
@@ -181,14 +181,19 @@ module.exports = React.createClass({
       }
     });
 
+    this.change(tree);
     window.removeEventListener('mousemove', this.drag);
     window.removeEventListener('mouseup', this.dragEnd);
   },
 
+  change: function change(tree) {
+    if (this.props.onChange) this.props.onChange(tree.obj);
+  },
+
   toggleCollapse: function toggleCollapse(nodeId) {
     var tree = this.state.tree;
-    var node = tree.get(nodeId);
-    node.collapsed = !node.collapsed;
+    var index = tree.getIndex(nodeId);
+    index.collapsed = !index.collapsed;
     tree.updateNodesPosition();
 
     this.setState({
