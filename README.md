@@ -4,3 +4,4 @@ React tree component
 ``` sh
 npm install react-ui-tree --save
 ```
+## [Demo](https://wangzuo.github.io/tree-inspector/)
