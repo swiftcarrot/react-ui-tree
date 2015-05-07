@@ -1,6 +1,6 @@
 {
   "name": "react-ui-tree",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "React tree component",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "webpack": "^1.8.10"
   },
   "dependencies": {
-    "@adjusted/tree": "^1.1.4",
+    "@adjusted/tree": "^1.1.5",
     "classnames": "^1.2.1"
   }
 }
