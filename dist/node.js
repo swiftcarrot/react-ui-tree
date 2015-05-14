@@ -39,7 +39,7 @@ var Node = React.createClass({
         }), style: styles },
       React.createElement(
         'div',
-        { className: 'inner', ref: 'inner', onClick: this._onClick, onMouseDown: this._onMouseDown },
+        { className: 'inner', ref: 'inner', onMouseDown: this._onMouseDown },
         index.children && index.children.length ? React.createElement('span', { className: cx({
             collapse: true,
             'caret-right': index.collapsed,
@@ -63,8 +63,6 @@ var Node = React.createClass({
     var nodeId = this.props.index.id;
     if (this.props.onCollapse) this.props.onCollapse(nodeId);
   },
-
-  _onClick: function _onClick(e) {},
 
   _onMouseDown: function _onMouseDown(e) {
     var nodeId = this.props.index.id;

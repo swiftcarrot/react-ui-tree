@@ -1,6 +1,6 @@
 'use strict';
 
-var Tree = require('@adjusted/tree');
+var Tree = require('js-tree');
 var proto = Tree.prototype;
 
 proto.updateNodesPosition = function () {

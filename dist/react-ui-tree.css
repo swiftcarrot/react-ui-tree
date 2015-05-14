@@ -23,9 +23,6 @@
   -ms-user-select: none;
   user-select: none;
 }
-.m-layout {
-  height: 100%;
-}
 .m-root {
   width: 100%;
 }
@@ -33,33 +30,16 @@
 .m-root > .m-node > .inner .remove {
   display: none;
 }
-.m-node.active > .inner {
-  background-color: #428bca;
-  color: #fff;
-}
-.m-node.active > .inner .fa {
-  color: #fff;
-}
 .m-node.placeholder > * {
   visibility: hidden;
 }
 .m-node.placeholder {
   border: 1px dashed #428bca;
 }
-.m-node.before {
-  border-top: 1px solid red;
-}
-.m-node.after {
-  border-bottom: 1px solid red;
-}
 .m-node .inner {
   position: relative;
-  padding: 8px 12px;
-  background-color: #f4f6f7;
-  color: #438eb9;
-  font-size: 14px;
-  border-bottom: 1px solid #dce2e8;
   cursor: pointer;
+  padding-left: 10px;
 }
 .m-node .inner.active {
   background-color: #428bca;
@@ -67,20 +47,9 @@
 .m-node .inner .name {
   margin: 0 4px;
 }
-.m-node .inner .action {
-  float: right;
-}
-.m-node .inner .action .fa {
-  margin: 0 4px;
-}
-.m-node .inner .action .fa:hover {
-  background-color: #428bca;
-  color: #fff;
-}
-.m-node .inner .fa {
-  color: #438eb9;
-}
 .m-node .inner .collapse {
+  position: absolute;
+  left: 0;
   cursor: pointer;
 }
 .m-node .inner .caret-right:before {
@@ -88,13 +57,4 @@
 }
 .m-node .inner .caret-down:before {
   content: '\25BE';
-}
-.m-node .inner .add {
-  cursor: pointer;
-}
-.m-node .inner .remove {
-  cursor: pointer;
-}
-.m-node .inner .move {
-  cursor: move;
 }

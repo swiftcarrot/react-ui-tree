@@ -59,26 +59,18 @@ module.exports = React.createClass({
 
     return React.createElement(
       'div',
-      { className: 'm-layout' },
-      React.createElement(
-        'div',
-        { className: 'm-tree' },
-        draggingDom,
-        React.createElement(
-          'div',
-          { className: 'm-root' },
-          React.createElement(Node, { tree: tree, index: tree.getIndex(1), key: 1,
-            paddingLeft: this.props.paddingLeft,
-            onDragStart: this.dragStart,
-            onCollapse: this.toggleCollapse,
-            dragging: dragging && dragging.id })
-        )
-      )
+      { className: 'm-tree' },
+      draggingDom,
+      React.createElement(Node, { tree: tree, index: tree.getIndex(1), key: 1,
+        paddingLeft: this.props.paddingLeft,
+        onDragStart: this.dragStart,
+        onCollapse: this.toggleCollapse,
+        dragging: dragging && dragging.id })
     );
   },
 
   dragStart: function dragStart(id, dom, e) {
-    var dragging = {
+    this.dragging = {
       id: id,
       w: dom.offsetWidth,
       h: dom.offsetHeight,
@@ -90,16 +82,20 @@ module.exports = React.createClass({
     this._startY = dom.offsetTop;
     this._offsetX = e.clientX;
     this._offsetY = e.clientY;
+    this._start = true;
 
     window.addEventListener('mousemove', this.drag);
     window.addEventListener('mouseup', this.dragEnd);
-
-    this.setState({
-      dragging: dragging
-    });
   },
 
   drag: function drag(e) {
+    if (this._start) {
+      this.setState({
+        dragging: this.dragging
+      });
+      this._start = false;
+    }
+
     var tree = this.state.tree;
     var dragging = this.state.dragging;
     var paddingLeft = this.props.paddingLeft;
