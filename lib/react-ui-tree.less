@@ -1,4 +1,4 @@
-@color-blue: #428bca;
+@blue: #428bca;
 
 .f-no-select {
   -webkit-user-select: none;
@@ -20,10 +20,6 @@
   .f-no-select;
 }
 
-.m-layout {
-  height: 100%;
-}
-
 .m-root {
   width: 100%;
 
@@ -35,72 +31,30 @@
 }
 
 .m-node {
-  &.active {
-    & > .inner {
-      background-color: @color-blue;
-      color: #fff;
-
-      .fa {
-        color: #fff;
-      }
-    }
-  }
-
   &.placeholder > * {
     visibility: hidden;
   }
 
   &.placeholder {
-    border: 1px dashed @color-blue;
-  }
-
-  &.append {
-
-  }
-
-  &.before {
-    border-top: 1px solid red;
-  }
-
-  &.after {
-    border-bottom: 1px solid red;
+    border: 1px dashed @blue;
   }
 
   .inner {
     position: relative;
-    padding: 8px 12px;
-    background-color: #f4f6f7;
-    color: #438eb9;
-    font-size: 14px;
-    border-bottom: 1px solid #dce2e8;
     cursor: pointer;
+    padding-left: 10px;
 
     &.active {
-      background-color: @color-blue;
+      background-color: @blue;
     }
 
     .name {
       margin: 0 4px;
     }
 
-    .action {
-      float: right;
-
-      .fa {
-        margin: 0 4px;
-
-        &:hover {
-          background-color: @color-blue;
-          color: #fff;
-        }
-      }
-    }
-
-    .fa {
-      color: #438eb9;
-    }
-
     .collapse {
+      position: absolute;
+      left: 0;
       cursor: pointer;
     }
 
@@ -110,18 +64,6 @@
 
     .caret-down:before {
       content: '\25BE';
-    }
-
-    .add {
-      cursor: pointer;
-    }
-
-    .remove {
-      cursor: pointer;
-    }
-
-    .move {
-      cursor: move;
     }
   }
 }

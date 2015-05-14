@@ -59,7 +59,7 @@ var App = React.createClass({
   },
 
   renderNode(node) {
-    return <span className="name" onClick={this.onClickNode.bind(null, node)}>{node.module}</span>;
+    return <span className="node" onClick={this.onClickNode.bind(null, node)}>{node.module}</span>;
   },
 
   onClickNode(node) {
