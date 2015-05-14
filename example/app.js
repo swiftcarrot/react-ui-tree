@@ -59,14 +59,21 @@ var App = React.createClass({
   },
 
   renderNode(node) {
-    return <span className="name">{node.module}</span>;
+    return <span className="name" onClick={this.onClickNode.bind(null, node)}>{node.module}</span>;
+  },
+
+  onClickNode(node) {
+    console.log('click', node);
   },
 
   render() {
     return (
       <div className="tree">
-        <Tree paddingLeft={20} tree={this.state.tree} onChange={this._onChange}
-        renderNode={this.renderNode}/>
+        <Tree
+          paddingLeft={20}
+          tree={this.state.tree}
+          onChange={this._onChange}
+          renderNode={this.renderNode}/>
       </div>
     );
   },
