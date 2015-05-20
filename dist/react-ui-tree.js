@@ -20,10 +20,17 @@ module.exports = React.createClass({
   },
 
   getInitialState: function getInitialState() {
-    var tree = new Tree(this.props.tree);
-    tree.renderNode = this.props.renderNode;
+    return this.init(this.props);
+  },
+
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    this.setState(this.init(nextProps));
+  },
+
+  init: function init(props) {
+    var tree = new Tree(props.tree);
+    tree.renderNode = props.renderNode;
     tree.updateNodesPosition();
-    window.tree = tree;
 
     return {
       tree: tree,
@@ -176,7 +183,7 @@ module.exports = React.createClass({
       }
     });
 
-    this.change(tree);
+    this.change(this.state.tree);
     window.removeEventListener('mousemove', this.drag);
     window.removeEventListener('mouseup', this.dragEnd);
   },
