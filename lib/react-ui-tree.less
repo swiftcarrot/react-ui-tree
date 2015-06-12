@@ -1,5 +1,3 @@
-@blue: #428bca;
-
 .f-no-select {
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -20,50 +18,32 @@
   .f-no-select;
 }
 
-.m-root {
-  width: 100%;
-
-  & > .m-node > .inner {
-    .move, .remove {
-      display: none;
-    }
-  }
-}
-
 .m-node {
   &.placeholder > * {
     visibility: hidden;
   }
 
   &.placeholder {
-    border: 1px dashed @blue;
+    border: 1px dashed #ccc;
   }
 
   .inner {
     position: relative;
     cursor: pointer;
     padding-left: 10px;
+  }
 
-    &.active {
-      background-color: @blue;
-    }
+  .collapse {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+  }
 
-    .name {
-      margin: 0 4px;
-    }
+  .caret-right:before {
+    content: '\25B8';
+  }
 
-    .collapse {
-      position: absolute;
-      left: 0;
-      cursor: pointer;
-    }
-
-    .caret-right:before {
-      content: '\25B8';
-    }
-
-    .caret-down:before {
-      content: '\25BE';
-    }
+  .caret-down:before {
+    content: '\25BE';
   }
 }
