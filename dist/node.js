@@ -6,30 +6,63 @@ var React = require('react');
 var Node = React.createClass({
   displayName: 'Node',
 
-  render: function render() {
+  renderCollapse: function renderCollapse() {
+    var index = this.props.index;
+
+    if (index.children && index.children.length) {
+      return React.createElement('span', {
+        className: cx({
+          collapse: true,
+          'caret-right': index.collapsed,
+          'caret-down': !index.collapsed
+        }),
+        onMouseDown: function (e) {
+          e.stopPropagation();
+        },
+        onClick: this.handleCollapse });
+    }
+
+    return null;
+  },
+
+  renderChildren: function renderChildren() {
     var _this = this;
 
+    var index = this.props.index;
+    var tree = this.props.tree;
+    var dragging = this.props.dragging;
+
+    if (index.children && index.children.length) {
+      var childrenStyles = {};
+      if (index.collapsed) childrenStyles.display = 'none';
+      childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
+
+      return React.createElement(
+        'div',
+        { className: 'children', style: childrenStyles },
+        index.children.map(function (child) {
+          var childIndex = tree.getIndex(child);
+          return React.createElement(Node, {
+            tree: tree,
+            index: childIndex,
+            key: childIndex.id,
+            dragging: dragging,
+            paddingLeft: _this.props.paddingLeft,
+            onCollapse: _this.props.onCollapse,
+            onDragStart: _this.props.onDragStart });
+        })
+      );
+    }
+
+    return null;
+  },
+
+  render: function render() {
     var tree = this.props.tree;
     var index = this.props.index;
     var dragging = this.props.dragging;
     var node = index.node;
     var styles = {};
-    var children = null;
-    var childrenStyles = {};
-
-    if (index.children && index.children.length) {
-      children = index.children.map(function (child) {
-        var childIndex = tree.getIndex(child);
-        return React.createElement(Node, { tree: tree, index: childIndex, key: childIndex.id,
-          dragging: dragging,
-          paddingLeft: _this.props.paddingLeft,
-          onCollapse: _this.props.onCollapse,
-          onDragStart: _this.props.onDragStart });
-      });
-    }
-
-    if (index.collapsed) childrenStyles.display = 'none';
-    childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
 
     return React.createElement(
       'div',
@@ -39,32 +72,21 @@ var Node = React.createClass({
         }), style: styles },
       React.createElement(
         'div',
-        { className: 'inner', ref: 'inner', onMouseDown: this._onMouseDown },
-        index.children && index.children.length ? React.createElement('span', { className: cx({
-            collapse: true,
-            'caret-right': index.collapsed,
-            'caret-down': !index.collapsed
-          }), onMouseDown: function (e) {
-            e.stopPropagation();
-          },
-          onClick: this._onCollapse }) : null,
+        { className: 'inner', ref: 'inner', onMouseDown: this.handleMouseDown },
+        this.renderCollapse(),
         tree.renderNode(node)
       ),
-      React.createElement(
-        'div',
-        { className: 'children', style: childrenStyles },
-        children
-      )
+      this.renderChildren()
     );
   },
 
-  _onCollapse: function _onCollapse(e) {
+  handleCollapse: function handleCollapse(e) {
     e.stopPropagation();
     var nodeId = this.props.index.id;
     if (this.props.onCollapse) this.props.onCollapse(nodeId);
   },
 
-  _onMouseDown: function _onMouseDown(e) {
+  handleMouseDown: function handleMouseDown(e) {
     var nodeId = this.props.index.id;
     var dom = this.refs.inner.getDOMNode();
 

@@ -24,7 +24,7 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    this.setState(this.init(nextProps));
+    if (!this._update) this.setState(this.init(nextProps));else this._update = false;
   },
 
   init: function init(props) {
@@ -44,31 +44,44 @@ module.exports = React.createClass({
     };
   },
 
-  render: function render() {
+  getDraggingDom: function getDraggingDom() {
     var tree = this.state.tree;
     var dragging = this.state.dragging;
-    var draggingDom = null;
 
-    if (dragging.id) {
+    if (dragging && dragging.id) {
       var draggingIndex = tree.getIndex(dragging.id);
-      var dragging = this.state.dragging;
-      draggingDom = React.createElement(
+      var draggingStyles = {
+        top: dragging.y,
+        left: dragging.x,
+        width: dragging.w
+      };
+
+      return React.createElement(
         'div',
-        { className: 'm-draggable', style: {
-            top: dragging.y,
-            left: dragging.x,
-            width: dragging.w
-          } },
-        React.createElement(Node, { tree: tree, index: draggingIndex,
+        { className: 'm-draggable', style: draggingStyles },
+        React.createElement(Node, {
+          tree: tree,
+          index: draggingIndex,
           paddingLeft: this.props.paddingLeft })
       );
     }
+
+    return null;
+  },
+
+  render: function render() {
+    var tree = this.state.tree;
+    var dragging = this.state.dragging;
+    var draggingDom = this.getDraggingDom();
 
     return React.createElement(
       'div',
       { className: 'm-tree' },
       draggingDom,
-      React.createElement(Node, { tree: tree, index: tree.getIndex(1), key: 1,
+      React.createElement(Node, {
+        tree: tree,
+        index: tree.getIndex(1),
+        key: 1,
         paddingLeft: this.props.paddingLeft,
         onDragStart: this.dragStart,
         onCollapse: this.toggleCollapse,
@@ -95,6 +108,7 @@ module.exports = React.createClass({
     window.addEventListener('mouseup', this.dragEnd);
   },
 
+  // oh
   drag: function drag(e) {
     if (this._start) {
       this.setState({
@@ -107,6 +121,8 @@ module.exports = React.createClass({
     var dragging = this.state.dragging;
     var paddingLeft = this.props.paddingLeft;
     var newIndex = null;
+    var index = tree.getIndex(dragging.id);
+    var collapsed = index.collapsed;
 
     var _startX = this._startX;
     var _startY = this._startY;
@@ -117,16 +133,15 @@ module.exports = React.createClass({
       x: _startX + e.clientX - _offsetX,
       y: _startY + e.clientY - _offsetY
     };
-    var index = tree.getIndex(dragging.id);
-    var collapsed = index.collapsed;
     dragging.x = pos.x;
     dragging.y = pos.y;
 
     var diffX = dragging.x - paddingLeft / 2 - (index.left - 2) * paddingLeft;
     var diffY = dragging.y - dragging.h / 2 - (index.top - 2) * dragging.h;
+
     if (diffX < 0) {
       // left
-      if (!index.next) {
+      if (index.parent && !index.next) {
         newIndex = tree.move(index.id, index.parent, 'after');
       }
     } else if (diffX > paddingLeft) {
@@ -134,6 +149,12 @@ module.exports = React.createClass({
       if (index.prev && !tree.getIndex(index.prev).collapsed) {
         newIndex = tree.move(index.id, index.prev, 'append');
       }
+    }
+
+    if (newIndex) {
+      index = newIndex;
+      newIndex.collapsed = collapsed;
+      dragging.id = newIndex.id;
     }
 
     if (diffY < 0) {
@@ -189,6 +210,7 @@ module.exports = React.createClass({
   },
 
   change: function change(tree) {
+    this._update = true;
     if (this.props.onChange) this.props.onChange(tree.obj);
   },
 
