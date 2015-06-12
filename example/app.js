@@ -1,6 +1,8 @@
+var cx = require('classnames');
 var React = require('react');
 var Tree = require('../lib/react-ui-tree.js');
 require('../lib/react-ui-tree.less');
+require('./theme.less');
 require('./app.less');
 
 var App = React.createClass({
@@ -54,16 +56,23 @@ var App = React.createClass({
         }, {
           module: 'webpack.config.js'
         }]
-      }
+      },
+      active: null
     };
   },
 
   renderNode(node) {
-    return <span className="node" onClick={this.onClickNode.bind(null, node)}>{node.module}</span>;
+    return <span className={cx({
+      'node': true,
+      'is-active': node === this.state.active
+    })} onClick={this.onClickNode.bind(null, node)}>{node.module}</span>;
   },
 
   onClickNode(node) {
     console.log('click', node);
+    this.setState({
+      active: node
+    });
   },
 
   render() {
