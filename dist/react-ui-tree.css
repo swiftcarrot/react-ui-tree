@@ -23,38 +23,25 @@
   -ms-user-select: none;
   user-select: none;
 }
-.m-root {
-  width: 100%;
-}
-.m-root > .m-node > .inner .move,
-.m-root > .m-node > .inner .remove {
-  display: none;
-}
 .m-node.placeholder > * {
   visibility: hidden;
 }
 .m-node.placeholder {
-  border: 1px dashed #428bca;
+  border: 1px dashed #ccc;
 }
 .m-node .inner {
   position: relative;
   cursor: pointer;
   padding-left: 10px;
 }
-.m-node .inner.active {
-  background-color: #428bca;
-}
-.m-node .inner .name {
-  margin: 0 4px;
-}
-.m-node .inner .collapse {
+.m-node .collapse {
   position: absolute;
   left: 0;
   cursor: pointer;
 }
-.m-node .inner .caret-right:before {
+.m-node .caret-right:before {
   content: '\25B8';
 }
-.m-node .inner .caret-down:before {
+.m-node .caret-down:before {
   content: '\25BE';
 }
