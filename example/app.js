@@ -1,7 +1,7 @@
 var React = require('react');
 var Tree = require('../lib/react-ui-tree.js');
-require('!style!css!less!../lib/react-ui-tree.less');
-require('!style!css!less!./app.less');
+require('../lib/react-ui-tree.less');
+require('./app.less');
 
 var App = React.createClass({
   getInitialState() {

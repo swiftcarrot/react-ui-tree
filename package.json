@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/pqx/react-ui-tree",
   "peerDependencies": {
-    "react": "^0.13.2"
+    "react": "^0.13.3"
   },
   "devDependencies": {
     "babel-core": "^5.1.13",
