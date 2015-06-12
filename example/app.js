@@ -68,12 +68,19 @@ var App = React.createClass({
 
   render() {
     return (
-      <div className="tree">
-        <Tree
-          paddingLeft={20}
-          tree={this.state.tree}
-          onChange={this._onChange}
-          renderNode={this.renderNode}/>
+      <div className="app">
+        <div className="tree">
+          <Tree
+            paddingLeft={20}
+            tree={this.state.tree}
+            onChange={this._onChange}
+            renderNode={this.renderNode}/>
+        </div>
+        <div className="inspector">
+           <pre>
+           {JSON.stringify(this.state.tree, null, '  ')}
+           </pre>
+         </div>
       </div>
     );
   },
