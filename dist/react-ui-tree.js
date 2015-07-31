@@ -58,7 +58,7 @@ module.exports = React.createClass({
 
       return React.createElement(
         'div',
-        { className: 'm-draggable', style: draggingStyles },
+        { className: "m-draggable", style: draggingStyles },
         React.createElement(Node, {
           tree: tree,
           index: draggingIndex,
@@ -76,7 +76,7 @@ module.exports = React.createClass({
 
     return React.createElement(
       'div',
-      { className: 'm-tree' },
+      { className: "m-tree" },
       draggingDom,
       React.createElement(Node, {
         tree: tree,

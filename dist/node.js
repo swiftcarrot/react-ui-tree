@@ -12,7 +12,7 @@ var Node = React.createClass({
     if (index.children && index.children.length) {
       return React.createElement('span', {
         className: cx({
-          collapse: true,
+          'collapse': true,
           'caret-right': index.collapsed,
           'caret-down': !index.collapsed
         }),
@@ -35,11 +35,11 @@ var Node = React.createClass({
     if (index.children && index.children.length) {
       var childrenStyles = {};
       if (index.collapsed) childrenStyles.display = 'none';
-      childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
+      childrenStyles['paddingLeft'] = this.props.paddingLeft + 'px';
 
       return React.createElement(
         'div',
-        { className: 'children', style: childrenStyles },
+        { className: "children", style: childrenStyles },
         index.children.map(function (child) {
           var childIndex = tree.getIndex(child);
           return React.createElement(Node, {
@@ -68,11 +68,11 @@ var Node = React.createClass({
       'div',
       { className: cx({
           'm-node': true,
-          placeholder: index.id === dragging
+          'placeholder': index.id === dragging
         }), style: styles },
       React.createElement(
         'div',
-        { className: 'inner', ref: 'inner', onMouseDown: this.handleMouseDown },
+        { className: "inner", ref: "inner", onMouseDown: this.handleMouseDown },
         this.renderCollapse(),
         tree.renderNode(node)
       ),
