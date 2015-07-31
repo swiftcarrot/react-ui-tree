@@ -1,9 +1,9 @@
 module.exports = {
   entry: './example/app.js',
   output: {
-    path: __dirname + '/builds',
-    filename: 'app.js',
-    publicPath: "/builds/",
+    path: __dirname + '/example',
+    filename: 'bundle.js',
+    publicPath: "/example/",
   },
   module: {
     loaders: [
@@ -11,6 +11,9 @@ module.exports = {
       {test: /\.css$/, loader: "style-loader!css-loader"},
       {test: /\.less$/, loader: "style-loader!css-loader!less-loader"}
     ]
+  },
+  externals: {
+    'react': 'React'
   },
   devtool: "source-map"
 };
