@@ -7,6 +7,27 @@ React tree component
 npm install react-ui-tree --save
 ```
 ### Usage
-check [example](https://github.com/pqx/react-ui-tree/blob/master/example/app.js)
+``` javascript
+<Tree
+  paddingLeft={20}              // left padding for children nodes in pixels
+  tree={this.state.tree}        // tree object
+  onChange={this.handleChange}  // onChange(tree) tree object changed
+  renderNode={this.renderNode}  // renderNode(node) return react element
+/>
+
+// a sample tree object
+// node.children & node.collapsed properties are hardcoded
+{
+  "module": "react-ui-tree",
+  "children": [{
+    "collapsed": true,
+    "module": "dist",
+    "children": [{
+      "module": "node.js"
+    }]
+  }]
+}
+```
+check [app.js](https://github.com/pqx/react-ui-tree/blob/gh-pages/example/app.js) for a working example
 ### License
 MIT
