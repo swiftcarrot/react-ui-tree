@@ -10,12 +10,10 @@ var Node = React.createClass({
     var index = this.props.index;
 
     if (index.children && index.children.length) {
+      var collapsed = index.node.collapsed;
+
       return React.createElement('span', {
-        className: cx({
-          'collapse': true,
-          'caret-right': index.collapsed,
-          'caret-down': !index.collapsed
-        }),
+        className: cx('collapse', collapsed ? 'caret-right' : 'caret-down'),
         onMouseDown: function (e) {
           e.stopPropagation();
         },
@@ -34,12 +32,12 @@ var Node = React.createClass({
 
     if (index.children && index.children.length) {
       var childrenStyles = {};
-      if (index.collapsed) childrenStyles.display = 'none';
-      childrenStyles['paddingLeft'] = this.props.paddingLeft + 'px';
+      if (index.node.collapsed) childrenStyles.display = 'none';
+      childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
 
       return React.createElement(
         'div',
-        { className: "children", style: childrenStyles },
+        { className: 'children', style: childrenStyles },
         index.children.map(function (child) {
           var childIndex = tree.getIndex(child);
           return React.createElement(Node, {
@@ -49,7 +47,8 @@ var Node = React.createClass({
             dragging: dragging,
             paddingLeft: _this.props.paddingLeft,
             onCollapse: _this.props.onCollapse,
-            onDragStart: _this.props.onDragStart });
+            onDragStart: _this.props.onDragStart
+          });
         })
       );
     }
@@ -66,13 +65,12 @@ var Node = React.createClass({
 
     return React.createElement(
       'div',
-      { className: cx({
-          'm-node': true,
-          'placeholder': index.id === dragging
+      { className: cx('m-node', {
+          placeholder: index.id === dragging
         }), style: styles },
       React.createElement(
         'div',
-        { className: "inner", ref: "inner", onMouseDown: this.handleMouseDown },
+        { className: 'inner', ref: 'inner', onMouseDown: this.handleMouseDown },
         this.renderCollapse(),
         tree.renderNode(node)
       ),

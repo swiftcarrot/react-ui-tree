@@ -8,9 +8,9 @@ module.exports = React.createClass({
   displayName: 'UITree',
 
   propTypes: {
-    tree: React.PropTypes.object,
+    tree: React.PropTypes.object.isRequired,
     paddingLeft: React.PropTypes.number,
-    renderNode: React.PropTypes.func
+    renderNode: React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -24,12 +24,14 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    if (!this._update) this.setState(this.init(nextProps));else this._update = false;
+    if (!this._updated) this.setState(this.init(nextProps));else this._updated = false;
   },
 
   init: function init(props) {
     var tree = new Tree(props.tree);
+    tree.isNodeCollapsed = props.isNodeCollapsed;
     tree.renderNode = props.renderNode;
+    tree.changeNodeCollapsed = props.changeNodeCollapsed;
     tree.updateNodesPosition();
 
     return {
@@ -58,11 +60,12 @@ module.exports = React.createClass({
 
       return React.createElement(
         'div',
-        { className: "m-draggable", style: draggingStyles },
+        { className: 'm-draggable', style: draggingStyles },
         React.createElement(Node, {
           tree: tree,
           index: draggingIndex,
-          paddingLeft: this.props.paddingLeft })
+          paddingLeft: this.props.paddingLeft
+        })
       );
     }
 
@@ -76,7 +79,7 @@ module.exports = React.createClass({
 
     return React.createElement(
       'div',
-      { className: "m-tree" },
+      { className: 'm-tree' },
       draggingDom,
       React.createElement(Node, {
         tree: tree,
@@ -85,7 +88,8 @@ module.exports = React.createClass({
         paddingLeft: this.props.paddingLeft,
         onDragStart: this.dragStart,
         onCollapse: this.toggleCollapse,
-        dragging: dragging && dragging.id })
+        dragging: dragging && dragging.id
+      })
     );
   },
 
@@ -122,7 +126,7 @@ module.exports = React.createClass({
     var paddingLeft = this.props.paddingLeft;
     var newIndex = null;
     var index = tree.getIndex(dragging.id);
-    var collapsed = index.collapsed;
+    var collapsed = index.node.collapsed;
 
     var _startX = this._startX;
     var _startY = this._startY;
@@ -146,14 +150,14 @@ module.exports = React.createClass({
       }
     } else if (diffX > paddingLeft) {
       // right
-      if (index.prev && !tree.getIndex(index.prev).collapsed) {
+      if (index.prev && !tree.getIndex(index.prev).node.collapsed) {
         newIndex = tree.move(index.id, index.prev, 'append');
       }
     }
 
     if (newIndex) {
       index = newIndex;
-      newIndex.collapsed = collapsed;
+      newIndex.node.collapsed = collapsed;
       dragging.id = newIndex.id;
     }
 
@@ -165,7 +169,7 @@ module.exports = React.createClass({
       // down
       if (index.next) {
         var below = tree.getIndex(index.next);
-        if (below.children && below.children.length && !below.collapsed) {
+        if (below.children && below.children.length && !below.node.collapsed) {
           newIndex = tree.move(index.id, index.next, 'prepend');
         } else {
           newIndex = tree.move(index.id, index.next, 'after');
@@ -183,7 +187,7 @@ module.exports = React.createClass({
     }
 
     if (newIndex) {
-      newIndex.collapsed = collapsed;
+      newIndex.node.collapsed = collapsed;
       dragging.id = newIndex.id;
     }
 
@@ -210,18 +214,21 @@ module.exports = React.createClass({
   },
 
   change: function change(tree) {
-    this._update = true;
+    this._updated = true;
     if (this.props.onChange) this.props.onChange(tree.obj);
   },
 
   toggleCollapse: function toggleCollapse(nodeId) {
     var tree = this.state.tree;
     var index = tree.getIndex(nodeId);
-    index.collapsed = !index.collapsed;
+    var node = index.node;
+    node.collapsed = !node.collapsed;
     tree.updateNodesPosition();
 
     this.setState({
       tree: tree
     });
+
+    this.change(tree);
   }
 });

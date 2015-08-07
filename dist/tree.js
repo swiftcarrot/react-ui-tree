@@ -11,7 +11,7 @@ proto.updateNodesPosition = function () {
 
   root.top = top++;
   root.left = left++;
-  walk(root.children, root, left, root.collapsed);
+  walk(root.children, root, left, root.node.collapsed);
 
   function walk(children, parent, left, collapsed) {
     var height = 1;
@@ -26,14 +26,14 @@ proto.updateNodesPosition = function () {
       }
 
       if (node.children && node.children.length) {
-        height += walk(node.children, node, left + 1, collapsed || node.collapsed);
+        height += walk(node.children, node, left + 1, collapsed || node.node.collapsed);
       } else {
         node.height = 1;
         height += 1;
       }
     });
 
-    if (parent.collapsed) parent.height = 1;else parent.height = height;
+    if (parent.node.collapsed) parent.height = 1;else parent.height = height;
     return parent.height;
   }
 };
