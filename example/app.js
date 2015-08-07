@@ -8,6 +8,8 @@ require('./app.less');
 var App = React.createClass({
   getInitialState() {
     return {
+      active: null,
+
       tree: {
         module: 'react-ui-tree',
         children: [{
@@ -56,8 +58,7 @@ var App = React.createClass({
         }, {
           module: 'webpack.config.js'
         }]
-      },
-      active: null
+      }
     };
   },
 
@@ -69,7 +70,6 @@ var App = React.createClass({
   },
 
   onClickNode(node) {
-    console.log('click', node);
     this.setState({
       active: node
     });
@@ -82,20 +82,23 @@ var App = React.createClass({
           <Tree
             paddingLeft={20}
             tree={this.state.tree}
-            onChange={this._onChange}
-            renderNode={this.renderNode}/>
+            onChange={this.handleChange}
+            renderNode={this.renderNode}
+          />
         </div>
         <div className="inspector">
-           <pre>
-           {JSON.stringify(this.state.tree, null, '  ')}
-           </pre>
+          <pre>
+          {JSON.stringify(this.state.tree, null, '  ')}
+          </pre>
          </div>
       </div>
     );
   },
 
-  _onChange(tree) {
-    this.setState({tree: tree});
+  handleChange(tree) {
+    this.setState({
+      tree: tree
+    });
   }
 });
 
