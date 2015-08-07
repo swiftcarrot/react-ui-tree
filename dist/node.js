@@ -4,7 +4,7 @@ var cx = require('classnames');
 var React = require('react');
 
 var Node = React.createClass({
-  displayName: 'Node',
+  displayName: 'UITreeNode',
 
   renderCollapse: function renderCollapse() {
     var index = this.props.index;
