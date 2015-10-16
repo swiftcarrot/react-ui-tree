@@ -1,5 +1,6 @@
 var cx = require('classnames');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Tree = require('../lib/react-ui-tree.js');
 require('../lib/react-ui-tree.less');
 require('./theme.less');
@@ -116,4 +117,4 @@ var App = React.createClass({
   }
 });
 
-React.render(<App/>, document.getElementById('app'));
+ReactDOM.render(<App/>, document.getElementById('app'));
