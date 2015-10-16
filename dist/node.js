@@ -2,6 +2,7 @@
 
 var cx = require('classnames');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Node = React.createClass({
   displayName: 'UITreeNode',
@@ -33,7 +34,7 @@ var Node = React.createClass({
     if (index.children && index.children.length) {
       var childrenStyles = {};
       if (index.node.collapsed) childrenStyles.display = 'none';
-      childrenStyles.paddingLeft = this.props.paddingLeft + 'px';
+      childrenStyles['paddingLeft'] = this.props.paddingLeft + 'px';
 
       return React.createElement(
         'div',
@@ -66,7 +67,7 @@ var Node = React.createClass({
     return React.createElement(
       'div',
       { className: cx('m-node', {
-          placeholder: index.id === dragging
+          'placeholder': index.id === dragging
         }), style: styles },
       React.createElement(
         'div',
@@ -86,7 +87,7 @@ var Node = React.createClass({
 
   handleMouseDown: function handleMouseDown(e) {
     var nodeId = this.props.index.id;
-    var dom = this.refs.inner.getDOMNode();
+    var dom = this.refs.inner;
 
     if (this.props.onDragStart) {
       this.props.onDragStart(nodeId, dom, e);
