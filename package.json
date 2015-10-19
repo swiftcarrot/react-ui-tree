@@ -4,7 +4,7 @@
   "description": "React tree component",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server -c --port=7788",
+    "start": "webpack-dev-server -c --port=8888",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {
