@@ -150,8 +150,11 @@ module.exports = React.createClass({
       }
     } else if (diffX > paddingLeft) {
       // right
-      if (index.prev && !tree.getIndex(index.prev).node.collapsed) {
-        newIndex = tree.move(index.id, index.prev, 'append');
+      if (index.prev) {
+        var prevNode = tree.getIndex(index.prev).node;
+        if (!prevNode.collapsed && !prevNode.leaf) {
+          newIndex = tree.move(index.id, index.prev, 'append');
+        }
       }
     }
 
