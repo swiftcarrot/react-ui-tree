@@ -18,7 +18,7 @@ npm install react-ui-tree --save
 />
 
 // a sample tree object
-// node.children & node.collapsed properties are hardcoded
+// node.children, node.collapsed, node.leaf properties are hardcoded
 {
   "module": "react-ui-tree",
   "children": [{
