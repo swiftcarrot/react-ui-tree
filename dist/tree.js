@@ -11,7 +11,10 @@ proto.updateNodesPosition = function () {
 
   root.top = top++;
   root.left = left++;
-  walk(root.children, root, left, root.node.collapsed);
+
+  if (root.children && root.children.length) {
+    walk(root.children, root, left, root.node.collapsed);
+  }
 
   function walk(children, parent, left, collapsed) {
     var height = 1;
