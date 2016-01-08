@@ -3,7 +3,7 @@ React tree component
 
 This project was initially developed for a webpage builder. It maintains an internal tree structure within the component through [js-tree](https://github.com/wangzuo/js-tree).
 ### Demo
-[https://pqx.github.io/react-ui-tree/example](https://pqx.github.io/react-ui-tree/example)
+[https://pqx.github.io/react-ui-tree](https://pqx.github.io/react-ui-tree)
 ### Installation
 ``` sh
 npm install react-ui-tree --save
@@ -30,6 +30,6 @@ npm install react-ui-tree --save
   }]
 }
 ```
-check [app.js](https://github.com/pqx/react-ui-tree/blob/gh-pages/example/app.js) for a working example
+check [app.js](https://github.com/pqx/react-ui-tree/blob/master/example/app.js) for a working example
 ### License
 MIT
