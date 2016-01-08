@@ -15,7 +15,7 @@ var Node = React.createClass({
 
       return React.createElement('span', {
         className: cx('collapse', collapsed ? 'caret-right' : 'caret-down'),
-        onMouseDown: function (e) {
+        onMouseDown: function onMouseDown(e) {
           e.stopPropagation();
         },
         onClick: this.handleCollapse });
@@ -23,7 +23,6 @@ var Node = React.createClass({
 
     return null;
   },
-
   renderChildren: function renderChildren() {
     var _this = this;
 
@@ -56,7 +55,6 @@ var Node = React.createClass({
 
     return null;
   },
-
   render: function render() {
     var tree = this.props.tree;
     var index = this.props.index;
@@ -78,13 +76,11 @@ var Node = React.createClass({
       this.renderChildren()
     );
   },
-
   handleCollapse: function handleCollapse(e) {
     e.stopPropagation();
     var nodeId = this.props.index.id;
     if (this.props.onCollapse) this.props.onCollapse(nodeId);
   },
-
   handleMouseDown: function handleMouseDown(e) {
     var nodeId = this.props.index.id;
     var dom = this.refs.inner;

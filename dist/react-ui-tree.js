@@ -18,15 +18,12 @@ module.exports = React.createClass({
       paddingLeft: 20
     };
   },
-
   getInitialState: function getInitialState() {
     return this.init(this.props);
   },
-
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     if (!this._updated) this.setState(this.init(nextProps));else this._updated = false;
   },
-
   init: function init(props) {
     var tree = new Tree(props.tree);
     tree.isNodeCollapsed = props.isNodeCollapsed;
@@ -45,7 +42,6 @@ module.exports = React.createClass({
       }
     };
   },
-
   getDraggingDom: function getDraggingDom() {
     var tree = this.state.tree;
     var dragging = this.state.dragging;
@@ -71,7 +67,6 @@ module.exports = React.createClass({
 
     return null;
   },
-
   render: function render() {
     var tree = this.state.tree;
     var dragging = this.state.dragging;
@@ -92,7 +87,6 @@ module.exports = React.createClass({
       })
     );
   },
-
   dragStart: function dragStart(id, dom, e) {
     this.dragging = {
       id: id,
@@ -199,7 +193,6 @@ module.exports = React.createClass({
       dragging: dragging
     });
   },
-
   dragEnd: function dragEnd() {
     this.setState({
       dragging: {
@@ -215,12 +208,10 @@ module.exports = React.createClass({
     window.removeEventListener('mousemove', this.drag);
     window.removeEventListener('mouseup', this.dragEnd);
   },
-
   change: function change(tree) {
     this._updated = true;
     if (this.props.onChange) this.props.onChange(tree.obj);
   },
-
   toggleCollapse: function toggleCollapse(nodeId) {
     var tree = this.state.tree;
     var index = tree.getIndex(nodeId);
