@@ -31,5 +31,11 @@ npm install react-ui-tree --save
 }
 ```
 check [app.js](https://github.com/pqx/react-ui-tree/blob/master/example/app.js) for a working example
+
+### Development
+- npm install
+- npm start
+- http://localhost:8888/example
+
 ### License
 MIT
