@@ -1,94 +1,135 @@
 'use strict';
 
-var cx = require('classnames');
-var React = require('react');
-var ReactDOM = require('react-dom');
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var Node = React.createClass({
-  displayName: 'UITreeNode',
+var _classnames = require('classnames');
 
-  renderCollapse: function renderCollapse() {
-    var index = this.props.index;
+var _classnames2 = _interopRequireDefault(_classnames);
 
-    if (index.children && index.children.length) {
-      var collapsed = index.node.collapsed;
+var _react = require('react');
 
-      return React.createElement('span', {
-        className: cx('collapse', collapsed ? 'caret-right' : 'caret-down'),
-        onMouseDown: function onMouseDown(e) {
-          e.stopPropagation();
-        },
-        onClick: this.handleCollapse });
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UITreeNode = function (_Component) {
+  _inherits(UITreeNode, _Component);
+
+  function UITreeNode() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, UITreeNode);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    return null;
-  },
-  renderChildren: function renderChildren() {
-    var _this = this;
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = UITreeNode.__proto__ || Object.getPrototypeOf(UITreeNode)).call.apply(_ref, [this].concat(args))), _this), _this.renderCollapse = function () {
+      var index = _this.props.index;
 
-    var index = this.props.index;
-    var tree = this.props.tree;
-    var dragging = this.props.dragging;
 
-    if (index.children && index.children.length) {
-      var childrenStyles = {};
-      if (index.node.collapsed) childrenStyles.display = 'none';
-      childrenStyles['paddingLeft'] = this.props.paddingLeft + 'px';
+      if (index.children && index.children.length) {
+        var collapsed = index.node.collapsed;
 
-      return React.createElement(
+
+        return _react2.default.createElement('span', {
+          className: (0, _classnames2.default)('collapse', collapsed ? 'caret-right' : 'caret-down'),
+          onMouseDown: function onMouseDown(e) {
+            return e.stopPropagation();
+          },
+          onClick: _this.handleCollapse
+        });
+      }
+
+      return null;
+    }, _this.renderChildren = function () {
+      var _this$props = _this.props,
+          index = _this$props.index,
+          tree = _this$props.tree,
+          dragging = _this$props.dragging;
+
+
+      if (index.children && index.children.length) {
+        var childrenStyles = {
+          paddingLeft: _this.props.paddingLeft
+        };
+
+        return _react2.default.createElement(
+          'div',
+          { className: 'children', style: childrenStyles },
+          index.children.map(function (child) {
+            var childIndex = tree.getIndex(child);
+
+            return _react2.default.createElement(UITreeNode, {
+              tree: tree,
+              index: childIndex,
+              key: childIndex.id,
+              dragging: dragging,
+              paddingLeft: _this.props.paddingLeft,
+              onCollapse: _this.props.onCollapse,
+              onDragStart: _this.props.onDragStart
+            });
+          })
+        );
+      }
+
+      return null;
+    }, _this.handleCollapse = function (e) {
+      e.stopPropagation();
+      var nodeId = _this.props.index.id;
+
+      if (_this.props.onCollapse) {
+        _this.props.onCollapse(nodeId);
+      }
+    }, _this.handleMouseDown = function (e) {
+      var nodeId = _this.props.index.id;
+      var dom = _this.refs.inner;
+
+      if (_this.props.onDragStart) {
+        _this.props.onDragStart(nodeId, dom, e);
+      }
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(UITreeNode, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          tree = _props.tree,
+          index = _props.index,
+          dragging = _props.dragging;
+      var node = index.node;
+
+      var styles = {};
+
+      return _react2.default.createElement(
         'div',
-        { className: 'children', style: childrenStyles },
-        index.children.map(function (child) {
-          var childIndex = tree.getIndex(child);
-          return React.createElement(Node, {
-            tree: tree,
-            index: childIndex,
-            key: childIndex.id,
-            dragging: dragging,
-            paddingLeft: _this.props.paddingLeft,
-            onCollapse: _this.props.onCollapse,
-            onDragStart: _this.props.onDragStart
-          });
-        })
+        {
+          className: (0, _classnames2.default)('m-node', {
+            placeholder: index.id === dragging
+          }),
+          style: styles
+        },
+        _react2.default.createElement(
+          'div',
+          { className: 'inner', ref: 'inner', onMouseDown: this.handleMouseDown },
+          this.renderCollapse(),
+          tree.renderNode(node)
+        ),
+        node.collapsed ? null : this.renderChildren()
       );
     }
+  }]);
 
-    return null;
-  },
-  render: function render() {
-    var tree = this.props.tree;
-    var index = this.props.index;
-    var dragging = this.props.dragging;
-    var node = index.node;
-    var styles = {};
+  return UITreeNode;
+}(_react.Component);
 
-    return React.createElement(
-      'div',
-      { className: cx('m-node', {
-          'placeholder': index.id === dragging
-        }), style: styles },
-      React.createElement(
-        'div',
-        { className: 'inner', ref: 'inner', onMouseDown: this.handleMouseDown },
-        this.renderCollapse(),
-        tree.renderNode(node)
-      ),
-      this.renderChildren()
-    );
-  },
-  handleCollapse: function handleCollapse(e) {
-    e.stopPropagation();
-    var nodeId = this.props.index.id;
-    if (this.props.onCollapse) this.props.onCollapse(nodeId);
-  },
-  handleMouseDown: function handleMouseDown(e) {
-    var nodeId = this.props.index.id;
-    var dom = this.refs.inner;
-
-    if (this.props.onDragStart) {
-      this.props.onDragStart(nodeId, dom, e);
-    }
-  }
-});
-
-module.exports = Node;
+module.exports = UITreeNode;

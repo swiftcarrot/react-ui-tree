@@ -1,31 +1,98 @@
 'use strict';
 
-var React = require('react');
-var Tree = require('./tree');
-var Node = require('./node');
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-module.exports = React.createClass({
-  displayName: 'UITree',
+var _react = require('react');
 
-  propTypes: {
-    tree: React.PropTypes.object.isRequired,
-    paddingLeft: React.PropTypes.number,
-    renderNode: React.PropTypes.func.isRequired
-  },
+var _react2 = _interopRequireDefault(_react);
 
-  getDefaultProps: function getDefaultProps() {
-    return {
-      paddingLeft: 20
-    };
-  },
-  getInitialState: function getInitialState() {
-    return this.init(this.props);
-  },
-  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    if (!this._updated) this.setState(this.init(nextProps));else this._updated = false;
-  },
-  init: function init(props) {
-    var tree = new Tree(props.tree);
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _tree = require('./tree');
+
+var _tree2 = _interopRequireDefault(_tree);
+
+var _node = require('./node');
+
+var _node2 = _interopRequireDefault(_node);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UITree = function (_Component) {
+  _inherits(UITree, _Component);
+
+  function UITree(props) {
+    _classCallCheck(this, UITree);
+
+    var _this = _possibleConstructorReturn(this, (UITree.__proto__ || Object.getPrototypeOf(UITree)).call(this, props));
+
+    _initialiseProps.call(_this);
+
+    _this.state = _this.init(props);
+    return _this;
+  }
+
+  _createClass(UITree, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (!this._updated) {
+        this.setState(this.init(nextProps));
+      } else {
+        this._updated = false;
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var tree = this.state.tree;
+      var dragging = this.state.dragging;
+      var draggingDom = this.getDraggingDom();
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'm-tree' },
+        draggingDom,
+        _react2.default.createElement(_node2.default, {
+          tree: tree,
+          index: tree.getIndex(1),
+          key: 1,
+          paddingLeft: this.props.paddingLeft,
+          onDragStart: this.dragStart,
+          onCollapse: this.toggleCollapse,
+          dragging: dragging && dragging.id
+        })
+      );
+    }
+
+    // oh
+
+  }]);
+
+  return UITree;
+}(_react.Component);
+
+UITree.propTypes = {
+  tree: _propTypes2.default.object.isRequired,
+  paddingLeft: _propTypes2.default.number,
+  renderNode: _propTypes2.default.func.isRequired
+};
+UITree.defaultProps = {
+  paddingLeft: 20
+};
+
+var _initialiseProps = function _initialiseProps() {
+  var _this2 = this;
+
+  this.init = function (props) {
+    var tree = new _tree2.default(props.tree);
     tree.isNodeCollapsed = props.isNodeCollapsed;
     tree.renderNode = props.renderNode;
     tree.changeNodeCollapsed = props.changeNodeCollapsed;
@@ -41,10 +108,13 @@ module.exports = React.createClass({
         h: null
       }
     };
-  },
-  getDraggingDom: function getDraggingDom() {
-    var tree = this.state.tree;
-    var dragging = this.state.dragging;
+  };
+
+  this.getDraggingDom = function () {
+    var _state = _this2.state,
+        tree = _state.tree,
+        dragging = _state.dragging;
+
 
     if (dragging && dragging.id) {
       var draggingIndex = tree.getIndex(dragging.id);
@@ -54,41 +124,22 @@ module.exports = React.createClass({
         width: dragging.w
       };
 
-      return React.createElement(
+      return _react2.default.createElement(
         'div',
         { className: 'm-draggable', style: draggingStyles },
-        React.createElement(Node, {
+        _react2.default.createElement(_node2.default, {
           tree: tree,
           index: draggingIndex,
-          paddingLeft: this.props.paddingLeft
+          paddingLeft: _this2.props.paddingLeft
         })
       );
     }
 
     return null;
-  },
-  render: function render() {
-    var tree = this.state.tree;
-    var dragging = this.state.dragging;
-    var draggingDom = this.getDraggingDom();
+  };
 
-    return React.createElement(
-      'div',
-      { className: 'm-tree' },
-      draggingDom,
-      React.createElement(Node, {
-        tree: tree,
-        index: tree.getIndex(1),
-        key: 1,
-        paddingLeft: this.props.paddingLeft,
-        onDragStart: this.dragStart,
-        onCollapse: this.toggleCollapse,
-        dragging: dragging && dragging.id
-      })
-    );
-  },
-  dragStart: function dragStart(id, dom, e) {
-    this.dragging = {
+  this.dragStart = function (id, dom, e) {
+    _this2.dragging = {
       id: id,
       w: dom.offsetWidth,
       h: dom.offsetHeight,
@@ -96,37 +147,35 @@ module.exports = React.createClass({
       y: dom.offsetTop
     };
 
-    this._startX = dom.offsetLeft;
-    this._startY = dom.offsetTop;
-    this._offsetX = e.clientX;
-    this._offsetY = e.clientY;
-    this._start = true;
+    _this2._startX = dom.offsetLeft;
+    _this2._startY = dom.offsetTop;
+    _this2._offsetX = e.clientX;
+    _this2._offsetY = e.clientY;
+    _this2._start = true;
 
-    window.addEventListener('mousemove', this.drag);
-    window.addEventListener('mouseup', this.dragEnd);
-  },
+    window.addEventListener('mousemove', _this2.drag);
+    window.addEventListener('mouseup', _this2.dragEnd);
+  };
 
-
-  // oh
-  drag: function drag(e) {
-    if (this._start) {
-      this.setState({
-        dragging: this.dragging
+  this.drag = function (e) {
+    if (_this2._start) {
+      _this2.setState({
+        dragging: _this2.dragging
       });
-      this._start = false;
+      _this2._start = false;
     }
 
-    var tree = this.state.tree;
-    var dragging = this.state.dragging;
-    var paddingLeft = this.props.paddingLeft;
+    var tree = _this2.state.tree;
+    var dragging = _this2.state.dragging;
+    var paddingLeft = _this2.props.paddingLeft;
     var newIndex = null;
     var index = tree.getIndex(dragging.id);
     var collapsed = index.node.collapsed;
 
-    var _startX = this._startX;
-    var _startY = this._startY;
-    var _offsetX = this._offsetX;
-    var _offsetY = this._offsetY;
+    var _startX = _this2._startX;
+    var _startY = _this2._startY;
+    var _offsetX = _this2._offsetX;
+    var _offsetY = _this2._offsetY;
 
     var pos = {
       x: _startX + e.clientX - _offsetX,
@@ -173,12 +222,12 @@ module.exports = React.createClass({
           newIndex = tree.move(index.id, index.next, 'after');
         }
       } else {
-        var below = tree.getNodeByTop(index.top + index.height);
-        if (below && below.parent !== index.id) {
-          if (below.children && below.children.length && !below.node.collapsed) {
-            newIndex = tree.move(index.id, below.id, 'prepend');
+        var _below = tree.getNodeByTop(index.top + index.height);
+        if (_below && _below.parent !== index.id) {
+          if (_below.children && _below.children.length && !_below.node.collapsed) {
+            newIndex = tree.move(index.id, _below.id, 'prepend');
           } else {
-            newIndex = tree.move(index.id, below.id, 'after');
+            newIndex = tree.move(index.id, _below.id, 'after');
           }
         }
       }
@@ -189,13 +238,14 @@ module.exports = React.createClass({
       dragging.id = newIndex.id;
     }
 
-    this.setState({
+    _this2.setState({
       tree: tree,
       dragging: dragging
     });
-  },
-  dragEnd: function dragEnd() {
-    this.setState({
+  };
+
+  this.dragEnd = function () {
+    _this2.setState({
       dragging: {
         id: null,
         x: null,
@@ -205,25 +255,29 @@ module.exports = React.createClass({
       }
     });
 
-    this.change(this.state.tree);
-    window.removeEventListener('mousemove', this.drag);
-    window.removeEventListener('mouseup', this.dragEnd);
-  },
-  change: function change(tree) {
-    this._updated = true;
-    if (this.props.onChange) this.props.onChange(tree.obj);
-  },
-  toggleCollapse: function toggleCollapse(nodeId) {
-    var tree = this.state.tree;
+    _this2.change(_this2.state.tree);
+    window.removeEventListener('mousemove', _this2.drag);
+    window.removeEventListener('mouseup', _this2.dragEnd);
+  };
+
+  this.change = function (tree) {
+    _this2._updated = true;
+    if (_this2.props.onChange) _this2.props.onChange(tree.obj);
+  };
+
+  this.toggleCollapse = function (nodeId) {
+    var tree = _this2.state.tree;
     var index = tree.getIndex(nodeId);
     var node = index.node;
     node.collapsed = !node.collapsed;
     tree.updateNodesPosition();
 
-    this.setState({
+    _this2.setState({
       tree: tree
     });
 
-    this.change(tree);
-  }
-});
+    _this2.change(tree);
+  };
+};
+
+module.exports = UITree;

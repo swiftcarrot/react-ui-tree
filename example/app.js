@@ -47,7 +47,7 @@ class App extends Component {
         </div>
         <div className="inspector">
           <h1>
-            react-ui-tree {packageJSON.version}
+            {packageJSON.name} {packageJSON.version}
           </h1>
           <button onClick={this.updateTree}>update tree</button>
           <pre>
