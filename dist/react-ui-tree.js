@@ -175,7 +175,7 @@ module.exports = React.createClass({
       } else {
         var below = tree.getNodeByTop(index.top + index.height);
         if (below && below.parent !== index.id) {
-          if (below.children && below.children.length) {
+          if (below.children && below.children.length && !below.node.collapsed) {
             newIndex = tree.move(index.id, below.id, 'prepend');
           } else {
             newIndex = tree.move(index.id, below.id, 'after');
