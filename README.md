@@ -1,7 +1,7 @@
 # react-ui-tree
 [![Build Status](https://travis-ci.org/pqx/react-ui-tree.svg)](https://travis-ci.org/pqx/react-ui-tree)
-![https://www.npmjs.com/package/react-ui-tree](https://img.shields.io/npm/v/react-ui-tree.svg)
-![https://www.npmjs.com/package/react-ui-tree](https://img.shields.io/npm/dm/react-ui-tree.svg)
+[![npm](https://www.npmjs.com/package/react-ui-tree)](https://img.shields.io/npm/v/react-ui-tree.svg)
+[![npm](https://www.npmjs.com/package/react-ui-tree)](https://img.shields.io/npm/dm/react-ui-tree.svg)
 
 
 React tree component
