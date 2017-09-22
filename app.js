@@ -50,9 +50,7 @@ class App extends Component {
             {packageJSON.name} {packageJSON.version}
           </h1>
           <button onClick={this.updateTree}>update tree</button>
-          <pre>
-            {JSON.stringify(this.state.tree, null, '  ')}
-          </pre>
+          <pre>{JSON.stringify(this.state.tree, null, '  ')}</pre>
         </div>
       </div>
     );
