@@ -1,6 +1,6 @@
 {
   "name": "react-ui-tree",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "React tree component",
   "main": "index.js",
   "scripts": {
