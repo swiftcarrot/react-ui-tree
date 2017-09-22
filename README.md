@@ -3,6 +3,9 @@
 [![npm](https://img.shields.io/npm/v/react-ui-tree.svg)](https://www.npmjs.com/package/react-ui-tree)
 [![npm](https://img.shields.io/npm/dm/react-ui-tree.svg)](https://www.npmjs.com/package/react-ui-tree)
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/FePD8SysdYMQPkxMdAFPzUxj/pqx/react-ui-tree'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/FePD8SysdYMQPkxMdAFPzUxj/pqx/react-ui-tree.svg' />
+</a>
 
 React tree component
 
