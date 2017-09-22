@@ -43,7 +43,7 @@ check [app.js](https://github.com/pqx/react-ui-tree/blob/master/example/app.js) 
 ### Development
 - npm install
 - npm start
-- http://localhost:8888/example
+- http://localhost:8080/example
 
 ### License
 MIT
