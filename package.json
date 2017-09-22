@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --port=8080",
     "build": "make",
-    "deploy": "npm run build && github-pages-deploy",
+    "deploy": "rm -rf .publish && npm run build && github-pages-deploy",
     "pretest": "npm run build",
     "prepublish": "npm test",
     "test": "mocha"
