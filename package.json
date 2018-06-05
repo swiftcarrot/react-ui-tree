@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/pqx/react-ui-tree",
   "peerDependencies": {
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -45,8 +45,8 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "mocha": "^3.5.3",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
