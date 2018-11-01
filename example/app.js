@@ -1,6 +1,6 @@
-import '../lib/react-ui-tree.less';
-import './theme.less';
-import './app.less';
+import '../lib/react-ui-tree.css';
+import './theme.css';
+import './app.css';
 import cx from 'classnames';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
