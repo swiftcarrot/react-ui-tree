@@ -7,7 +7,8 @@
   "scripts": {
     "start": "webpack-dev-server --port=8888",
     "build": "rollup -c",
-    "deploy": "webpack --mode production  && github-pages-deploy",
+    "build-example": "webpack --mode production",
+    "deploy": "webpack --mode production && github-pages-deploy",
     "test": "jest --coverage"
   },
   "github-pages-deploy": {
