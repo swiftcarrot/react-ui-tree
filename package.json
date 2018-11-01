@@ -2,14 +2,13 @@
   "name": "react-ui-tree",
   "version": "4.0.0",
   "description": "React tree component",
-  "main": "index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "scripts": {
-    "start": "webpack-dev-server --port=8080",
-    "build": "make",
-    "deploy": "rm -rf .publish && npm run build && github-pages-deploy",
-    "pretest": "npm run build",
-    "prepublish": "npm test",
-    "test": "mocha"
+    "start": "webpack-dev-server --port=8888",
+    "build": "rollup -c",
+    "deploy": "webpack --mode production  && github-pages-deploy",
+    "test": "jest --coverage"
   },
   "github-pages-deploy": {
     "src": "example"
@@ -23,6 +22,9 @@
     "react-component",
     "tree"
   ],
+   "files": [
+    "dist"
+  ],
   "author": "Wang Zuo",
   "license": "MIT",
   "bugs": {
@@ -33,27 +35,40 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "github-pages-deploy": "^0.0.3",
-    "less": "^2.7.2",
-    "less-loader": "^4.0.5",
-    "mocha": "^3.5.3",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "style-loader": "^0.18.2",
-    "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.5.1"
-  },
   "dependencies": {
+    "@babel/runtime": "^7.1.2",
     "classnames": "^2.2.5",
     "js-tree": "^2.0.1",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.6.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.1",
+    "jest": "^23.6.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-test-renderer": "^16.6.0",
+    "regenerator-runtime": "^0.12.1",
+    "rollup": "^0.66.6",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   }
 }

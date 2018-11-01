@@ -1,4 +1,6 @@
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -12,9 +14,9 @@ body {
 
 .inspector {
   margin-left: 400px;
+}
 
-  pre {
-    font-family: Menlo;
-    font-size: 13px;
-  }
+.inspector pre {
+  font-family: Menlo;
+  font-size: 13px;
 }
