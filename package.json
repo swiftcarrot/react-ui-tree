@@ -4,8 +4,9 @@
   "description": "React tree component",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
+  "types": "index.d.ts",
   "scripts": {
-    "start": "webpack-dev-server --port=8888",
+    "start": "webpack-dev-server --port=8080",
     "build": "rollup -c",
     "build-example": "webpack --mode production",
     "deploy": "webpack --mode production && github-pages-deploy",
@@ -24,7 +25,8 @@
     "tree"
   ],
    "files": [
-    "dist"
+     "index.d.ts",
+     "dist"
   ],
   "author": "Wang Zuo",
   "license": "MIT",
